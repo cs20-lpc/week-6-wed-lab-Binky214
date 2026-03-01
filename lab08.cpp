@@ -46,61 +46,60 @@ int main() {
  * TODO: make them tail recursive :)
 *******************************************************************************/
 
-unsigned fact(unsigned n) {
-    // base cases (combined)
-    if (n <= 1) {
-        return 1;
-    }
+// TR means tail-recursive function specifically
 
-    // recursive case
-    unsigned res = fact(n - 1);
-    return res * n;
+// AI recommended that I use two functions for accumulation
+unsigned fact_tr(unsigned n, unsigned x) {
+    if (n <= 1) {
+        return x;
+    }
+    return fact_tr(n - 1, x * n);
+}
+
+unsigned fact(unsigned n) {
+    return fact_tr(n, 1);
+}
+
+unsigned fib_tr(unsigned n, unsigned a, unsigned b) {
+    if (n == 0) {
+        return a;
+    }
+    return fib_tr(n - 1, b, a + b);
 }
 
 unsigned fib(unsigned n) {
-    // base case 1
-    if (n == 0) {
-        return 0;
-    }
+    return fib_tr(n, 0, 1);
+}
 
-    // base case 2
-    else if (n == 1) {
-        return 1;
+unsigned mult_tr(unsigned x, unsigned y, unsigned z) {
+    if (y == 0) {
+        return z;
     }
-
-    // recursive case
-    return fib(n - 1) + fib(n - 2);
+    return mult_tr(x, y - 1, z + x);
 }
 
 unsigned mult(unsigned x, unsigned y) {
-    // base case
-    if (y == 0) {
-        return 0;
-    }
+    return mult_tr(x, y, 0);
+}
 
-    // recursive case
-    unsigned res = mult(x, y - 1);
-    return res + x;
+unsigned power_tr(unsigned x, unsigned y, unsigned z) {
+    if (y == 0) {
+        return z;
+    }
+    return power_tr(x, y - 1, z * x);
 }
 
 unsigned power(unsigned x, unsigned y) {
-    // base case
-    if (y == 0) {
-        return 1;
-    }
+    return power_tr(x, y, 1);
+}
 
-    // recursive case
-    unsigned res = power(x, y - 1);
-    return res * x;
+unsigned product_tr(unsigned x, unsigned y, unsigned z) {
+    if (x > y) {
+        return z;
+    }
+    return product_tr(x + 1, y, z * x);
 }
 
 unsigned product(unsigned x, unsigned y) {
-    // base case
-    if (x == y) {
-        return x;
-    }
-
-    // recursive case
-    unsigned p = product(x + 1, y);
-    return p * x;
+    return product_tr(x, y, 1);
 }
